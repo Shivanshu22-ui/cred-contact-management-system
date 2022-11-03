@@ -9,37 +9,34 @@ using namespace std;
 
 class contact
 {
-    long ph;
-    char firstName[20], lastName[20];
-
+    string ph;
+    string firstName, lastName;
 public:
-
-    void create_contact(long ph,char fname[],char lname[]){
-        this->ph=ph;
-        this->firstName[20]=fname[20];
-        this->lastName[20]=lname[20];
-}
+    void create_contact(string ph, string fname, string lname)
+    {
+        this->ph = ph;
+        this->firstName = fname;
+        this->lastName = lname;
+    }
     void show_contact()
     {
         cout << endl
              << "Phone #: " << ph;
         cout << endl
-             << "Name: " << firstName << " " << lastName;
-        cout << endl
-             << "Address: " << lastName;
+             << "Name " << firstName << " " << lastName;
     }
 
-    long getPhone()
+    string getPhone()
     {
         return ph;
     }
 
-    char *getFirstName()
+    string getFirstName()
     {
         return firstName;
     }
 
-    char *getLastName()
+    string getLastName()
     {
         return lastName;
     }
@@ -48,10 +45,13 @@ public:
 fstream fp;
 contact cont;
 
-void save_contact(long ph, char fname[], char lname[])
+void save_contact(string ph, string fname, string lname)
 {
     fp.open("contactBook.txt", ios::out | ios::app);
+    cout << "Creating Contadtc" << endl;
     cont.create_contact(ph, fname, lname);
+    cout << "Created Contact" << ph << endl;
+    cout << "Created Contact" << lname << endl;
     fp.write((char *)&cont, sizeof(contact));
     fp.close();
     cout << endl
@@ -83,40 +83,38 @@ void display_contact(char typeOfSearch[], char searchField[], char searchValue[]
     while (fp.read((char *)&cont, sizeof(contact)))
     {
 
-        if (strcmpi(typeOfSearch, "Partial") == 0)
+        if (typeOfSearch== "Partial")
         {
             cont.show_contact();
         }
         else
         {
-            if (strcmpi(searchField, "Phone") == 0)
+            if (searchField= "Phone")
             {
-                if(cont.getPhone()== atoi(searchValue))
+                if (cont.getPhone()==searchValue)
                 {
                     cont.show_contact();
                 }
                 {
-                cont.show_contact();
-                found=true;
+                    cont.show_contact();
+                    found = true;
                 }
             }
-            else if (strcmpi(searchField, "FName") == 0)
+            else if (searchField== "FName")
             {
-                if(strcmpi(cont.getFirstName(), searchValue)==0)
+                if (cont.getFirstName()== searchValue)
                 {
                     cont.show_contact();
-                    found=true;
+                    found = true;
                 }
-                
             }
             else
             {
-                if(strcmpi(cont.getLastName(), searchValue)==0)
+                if (cont.getLastName() == searchValue)
                 {
                     cont.show_contact();
-                    found=true;
+                    found = true;
                 }
-                
             }
         }
     }
@@ -127,8 +125,6 @@ void display_contact(char typeOfSearch[], char searchField[], char searchValue[]
     }
     getchar();
 }
-
-
 
 int main(int argc, char *argv[])
 {
@@ -147,10 +143,20 @@ int main(int argc, char *argv[])
             break;
 
         case 1:
-        long ph;
-            char fname[20], lname[20];;
+        {
+            string ph;
+            char fname[20], lname[20];
+            cout << "Phone: ";
+            cin >> ph;
+            cout << "First Name: ";
+            cin.ignore();
+            cin >> fname;
+            cout << "Last Name: ";
+            cin.ignore();
+            cin >> lname;
             save_contact(ph, fname, lname);
             break;
+        }
 
         case 2:
             show_all_contacts();
@@ -161,7 +167,6 @@ int main(int argc, char *argv[])
             cin >> searchValue;
             display_contact(typeOfSearch, searchField, searchValue);
             break;
-
 
         default:
             break;
