@@ -181,7 +181,7 @@ int main()
     // Displaying content of Trie
     cout << "Content of Trie: " << endl;
     display(root1, str, level);
-    cout<<search1(root1,"32")->name<<"  done"<<endl;
+    cout<<search1(root1,"32")->firstName<<"  done"<<endl;
     // Search for different keys
     // cout<<"these"<<" --- "<<output[search(root, "these")]<<endl;
     // cout<<"their"<<" --- "<<output[search(root, "their")]<<endl;
