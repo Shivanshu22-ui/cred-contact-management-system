@@ -94,6 +94,10 @@ void display_contact(char typeOfSearch[], char searchField[], char searchValue[]
             if(strcmpi(searchField,"Phone")==0){
                 
             }
+            else if(strcmpi(searchField,"Phone")==0){
+
+            }
+            else
         }
 	}
 	fp.close();
