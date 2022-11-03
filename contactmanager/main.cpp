@@ -9,20 +9,12 @@ class contact
     char firstName[20], lastName[20];
 
 public:
-    void create_contact()
-    {
-        cout << "Phone: ";
-        cin >> ph;
-        cout << "Name: ";
-        cin.ignore();
-        cin >> firstName;
-        cout << "Last: ";
-        cin.ignore();
-        cin >> lastName;
 
-        cout << "\n";
-    }
-
+    void create_contact(long ph,char fname[],char lname[]){
+        this->ph=ph;
+        this->firstName[20]=fname[20];
+        this->lastName[20]=lname[20];
+}
     void show_contact()
     {
         cout << endl
@@ -52,10 +44,10 @@ public:
 fstream fp;
 contact cont;
 
-void save_contact()
+void save_contact(long ph, char fname[], char lname[])
 {
     fp.open("contactBook.txt", ios::out | ios::app);
-    cont.create_contact();
+    cont.create_contact(ph, fname, lname);
     fp.write((char *)&cont, sizeof(contact));
     fp.close();
     cout << endl
@@ -151,7 +143,9 @@ int main(int argc, char *argv[])
             break;
 
         case 1:
-            save_contact();
+        long ph;
+            char fname[20], lname[20];;
+            save_contact(ph, fname, lname);
             break;
 
         case 2:
