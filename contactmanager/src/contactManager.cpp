@@ -1,6 +1,10 @@
 #include <fstream>
 #include <string.h>
 #include <iostream>
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+
 using namespace std;
 
 class contact
