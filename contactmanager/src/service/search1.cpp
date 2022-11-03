@@ -2,6 +2,7 @@
 #include <stack>
 using namespace std;
 
+#define CHAR_TO_INDEX(c) ((int)c - (int)'a')
 const int SIZE = 50;
  
 struct TrieNode
@@ -102,6 +103,7 @@ bool search(struct TrieNode *root, string key)
     }
     return (pCrawl->isEnd);
 }
+
 TrieNode *search1(struct TrieNode *root, string key)
 {
     struct TrieNode *pCrawl = root;
@@ -115,13 +117,20 @@ TrieNode *search1(struct TrieNode *root, string key)
 
         pCrawl = pCrawl->children[index];
     }
-
     return (pCrawl);
 }
  
  bool isLeafNode(struct TrieNode* root)
 {
     return root->isEnd != false;
+}
+
+bool isLastNode(struct TrieNode* root)
+{
+    for (int i = 0; i < SIZE; i++)
+        if (root->children[i])
+            return 0;
+    return 1;
 }
   
 void display(struct TrieNode* root, char str[], int level)
@@ -143,6 +152,41 @@ void display(struct TrieNode* root, char str[], int level)
     }
 }
 
+
+void partialSearch(struct TrieNode* root,
+                    string currPrefix)
+{
+    if (root->isEnd)
+        cout << currPrefix << endl;
+ 
+    for (int i = 0; i < SIZE; i++)
+        if (root->children[i]) {
+            char child = 'a' + i;
+            partialSearch(root->children[i],
+                           currPrefix + child);
+        }
+}
+ 
+int printPartialSearch(TrieNode* root, const string query)
+{
+    struct TrieNode* pCrawl = root;
+    for (char c : query) {
+        int ind = CHAR_TO_INDEX(c);
+ 
+        if (!pCrawl->children[ind])
+            return 0;
+ 
+        pCrawl = pCrawl->children[ind];
+    }
+
+    if (isLastNode(pCrawl)) {
+        cout << query << endl;
+        return -1;
+    }
+    partialSearch(pCrawl, query);
+    return 1;
+}
+
 int main()
 {
     string keys[] = {"the", "a", "there",
@@ -156,8 +200,8 @@ int main()
     struct TrieNode *phoneRoot = getNode();
 
     // pair<string,int> data;
-    string name[] = {"hello","hi","apple","app"};
-    long ph[]={12313,1321,32,135156};
+    string name[] = {"hello","hi","apple","app","helll"};
+    long ph[]={12313,1321,32,135156,445};
 
 
     // for(int i =0;i<4;i++){
@@ -168,11 +212,25 @@ int main()
         string number = LongToString(ph[i]);
         insertPhoneNumber(root1, LongToString(ph[i]),name[i],"");
     }
-    // Construct trie
-    // for (int i = 0; i < n; i++)
-    //     insertName(root, keys[i]);
+    struct TrieNode* root2 = getNode();
+    insertName(root2, "hello","");
+    insertName(root2, "dog","");
+    insertName(root2, "hell","");
+    insertName(root2, "cat","");
+    insertName(root2, "a","");
+    insertName(root2, "hel","");
+    insertName(root2, "help","");
+    insertName(root2, "helps","");
+    insertName(root2, "helping","");
+    int comp = printPartialSearch(root2, "hel");
+    if (comp == -1)
+        cout << "No other strings found with this prefix\n";
  
-    // Search for different keys
+    else if (comp == 0)
+        cout << "No string found with this prefix\n";
+
+
+
     char output[][32] = {"Not present in trie", "Present in trie"};
  
     int level = 0;
@@ -181,7 +239,7 @@ int main()
     // Displaying content of Trie
     cout << "Content of Trie: " << endl;
     display(root1, str, level);
-    cout<<search1(root1,"32")->name<<"  done"<<endl;
+    cout<<search1(root1,"32")->firstName<<"  done"<<endl;
     // Search for different keys
     // cout<<"these"<<" --- "<<output[search(root, "these")]<<endl;
     // cout<<"their"<<" --- "<<output[search(root, "their")]<<endl;
