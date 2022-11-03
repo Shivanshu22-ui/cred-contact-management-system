@@ -9,7 +9,7 @@ struct TrieNode
     struct TrieNode *children[SIZE];
     string firstName;
     string lastName;
-    long phoneNumber;
+    string phoneNumber;
     bool isEnd;
 };
  
@@ -25,7 +25,7 @@ struct TrieNode *getNode(void)
     return pNode;
 }
 
-void insertName(struct TrieNode *root, string key,long phone)
+void insertName(struct TrieNode *root, string key,string phone)
 {
     struct TrieNode *pCrawl = root;
  
