@@ -67,14 +67,14 @@ string LongToString(long long_num)
     return signValue + long_to_string;
 }
 
-void insertPhoneNumber(struct TrieNode *root, long key,string fname,string lname)
+void insertPhoneNumber(struct TrieNode *root, string key,string fname,string lname)
 {
     struct TrieNode *pCrawl = root;
-    string phoneNumber= LongToString(key);
+    // string phoneNumber= LongToString(key);
  
-    for (int i = 0; i < phoneNumber.length(); i++)
+    for (int i = 0; i < key.length(); i++)
     {
-        int index = phoneNumber[i] - 'a';
+        int index = key[i] - 'a';
         if (!pCrawl->children[index])
             pCrawl->children[index] = getNode();
  
@@ -162,7 +162,7 @@ int main()
     // }
     for(int i =0;i<4;i++){
         string number = LongToString(ph[i]);
-        insertPhoneNumber(root1,ph[i],name[i],"");
+        insertPhoneNumber(root1, LongToString(ph[i]),name[i],"");
     }
     // Construct trie
     // for (int i = 0; i < n; i++)
