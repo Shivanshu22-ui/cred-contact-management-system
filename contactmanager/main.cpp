@@ -81,11 +81,7 @@ void display_contact(char typeOfSearch[], char searchField[], char searchValue[]
 	fp.open("contactBook.txt",ios::in);
 	while(fp.read((char*)&cont,sizeof(contact)))
 	{
-		// if(cont.getPhone()==num)
-		// {
-		// cont.show_contact();
-		// found=true;
-		// }
+
         if(strcmpi(typeOfSearch,"Partial")==0)
         {
             cont.show_contact();
@@ -94,10 +90,16 @@ void display_contact(char typeOfSearch[], char searchField[], char searchValue[]
             if(strcmpi(searchField,"Phone")==0){
                 
             }
-            else if(strcmpi(searchField,"Phone")==0){
+            else if(strcmpi(searchField,"FName")==0){
 
             }
-            else
+            else{
+                		// if(cont.getPhone()==num)
+		// {
+		// cont.show_contact();
+		// found=true;
+		// }
+            }
         }
 	}
 	fp.close();
