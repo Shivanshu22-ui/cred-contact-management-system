@@ -1,12 +1,6 @@
-#include <fstream>
-#include <string.h>
-#include <iostream>
-#include <iostream>
-#include <cstring>
-#include <cstdlib>
-#include <stack>
+#include "../service/contactManagerLibrary.h"
 
-// #include "../service/contactManagerLibrary.h"
+
 using namespace std;
 
 #define CHAR_TO_INDEX(c) ((int)c - (int)'a')
@@ -53,7 +47,7 @@ public:
 fstream fp;
 contact cont;
 
-void save_contact(string ph, string fname, string lname)
+void save_contact(TrieNode *root, string ph, string fname, string lname)
 {
     fp.open("contactBook.txt", ios::out | ios::app);
     cout << "Creating Contadtc" << endl;
@@ -138,7 +132,6 @@ void display_contact(string typeOfSearch, string searchField, string searchValue
 
 int main(int argc, char *argv[])
 {
-
     for (;;)
     {
         int ch;
@@ -165,7 +158,7 @@ int main(int argc, char *argv[])
             cout << "Last Name: ";
             cin.ignore();
             cin >> lname;
-            save_contact(ph, fname, lname);
+            save_contact(, ph, fname, lname);
             break;
         }
 

@@ -1,4 +1,11 @@
-#include "bits/stdc++.h"
+#include <fstream>
+#include <string.h>
+#include <iostream>
+#include <iostream>
+#include <cstring>
+#include <cstdlib>
+#include <stack>
+
 using namespace std;
     const int SIZE = 50;
     struct TrieNode
