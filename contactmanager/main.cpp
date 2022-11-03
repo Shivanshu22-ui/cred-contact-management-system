@@ -34,6 +34,11 @@ class contact
         cout << endl
              << "Address: " << lastName;
     }
+    void create_contact(long ph,char fname[],char lname[]){
+        this->ph=ph;
+        this->firstName[20]=fname[20];
+        this->lastName[20]=lname[20];
+    }
 
     long getPhone()
     {
