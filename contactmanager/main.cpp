@@ -158,8 +158,6 @@ int main(int argc, char *argv[])
 				cin>>searchValue;
 				display_contact(typeOfSearch, searchField, searchValue);
 				break;
-			case 4:edit_contact();
-				break;
 
 			default:
 				break;
