@@ -8,6 +8,10 @@
 
 using namespace std;
 
+#define CHAR_TO_INDEX(c) ((int)c - (int)'a')
+
+const int SIZE = 50;
+
 class contact
 {
     string ph;
@@ -218,6 +222,51 @@ void show_all_contacts()
              << endl;
     }
     fp.close();
+}
+
+void partialSearch(struct TrieNode *root,
+                   string currPrefix)
+{
+    if (root->isEnd)
+        cout << currPrefix << endl;
+
+    for (int i = 0; i < SIZE; i++)
+        if (root->children[i])
+        {
+            char child = 'a' + i;
+            partialSearch(root->children[i],
+                          currPrefix + child);
+        }
+}
+
+bool isLastNode(struct TrieNode *root)
+{
+    for (int i = 0; i < SIZE; i++)
+        if (root->children[i])
+            return 0;
+    return 1;
+}
+
+int printPartialSearch(TrieNode *root, const string query)
+{
+    struct TrieNode *pCrawl = root;
+    for (char c : query)
+    {
+        int ind = CHAR_TO_INDEX(c);
+
+        if (!pCrawl->children[ind])
+            return 0;
+
+        pCrawl = pCrawl->children[ind];
+    }
+
+    if (isLastNode(pCrawl))
+    {
+        cout << query << endl;
+        return -1;
+    }
+    partialSearch(pCrawl, query);
+    return 1;
 }
 
 void display_contact(string typeOfSearch, string searchField, string searchValue)
