@@ -4,6 +4,7 @@
 #include <iostream>
 #include <cstring>
 #include <cstdlib>
+#include <stack>
 
 using namespace std;
 
@@ -11,6 +12,7 @@ class contact
 {
     string ph;
     string firstName, lastName;
+
 public:
     void create_contact(string ph, string fname, string lname)
     {
@@ -41,6 +43,150 @@ public:
         return lastName;
     }
 };
+
+const int SIZE = 50;
+
+struct TrieNode
+{
+    struct TrieNode *children[SIZE];
+    string firstName;
+    string lastName;
+    string phoneNumber;
+    bool isEnd;
+};
+
+struct TrieNode *getNode(void)
+{
+    struct TrieNode *pNode = new TrieNode;
+
+    pNode->isEnd = false;
+
+    for (int i = 0; i < SIZE; i++)
+        pNode->children[i] = NULL;
+
+    return pNode;
+}
+
+void insertName(struct TrieNode *root, string key, string phone)
+{
+    struct TrieNode *pCrawl = root;
+
+    for (int i = 0; i < key.length(); i++)
+    {
+        int index = key[i] - 'a';
+        if (!pCrawl->children[index])
+            pCrawl->children[index] = getNode();
+
+        pCrawl = pCrawl->children[index];
+    }
+
+    pCrawl->isEnd = true;
+    pCrawl->phoneNumber = phone;
+    pCrawl->firstName = "";
+    pCrawl->lastName = "";
+}
+
+string LongToString(long long_num)
+{
+    stack<char> stringStack;
+    string signValue = "";
+    if (long_num < 0)
+    {
+        signValue = "-";
+        long_num = -long_num;
+    }
+
+    while (long_num > 0)
+    {
+        char convertedDigit = long_num % 10 + '0';
+        stringStack.push(convertedDigit);
+        long_num /= 10;
+    }
+
+    string long_to_string = "";
+
+    while (!stringStack.empty())
+    {
+        long_to_string += stringStack.top();
+        stringStack.pop();
+    }
+
+    return signValue + long_to_string;
+}
+
+void insertPhoneNumber(struct TrieNode *root, string key, string fname, string lname)
+{
+    struct TrieNode *pCrawl = root;
+    // string phoneNumber= LongToString(key);
+
+    for (int i = 0; i < key.length(); i++)
+    {
+        int index = key[i] - 'a';
+        if (!pCrawl->children[index])
+            pCrawl->children[index] = getNode();
+
+        pCrawl = pCrawl->children[index];
+    }
+
+    pCrawl->isEnd = true;
+    pCrawl->firstName = fname;
+    pCrawl->lastName = lname;
+}
+
+bool search(struct TrieNode *root, string key)
+{
+    struct TrieNode *pCrawl = root;
+
+    for (int i = 0; i < key.length(); i++)
+    {
+        int index = key[i] - 'a';
+        if (!pCrawl->children[index])
+            return false;
+
+        pCrawl = pCrawl->children[index];
+    }
+    return (pCrawl->isEnd);
+}
+TrieNode *search1(struct TrieNode *root, string key)
+{
+    struct TrieNode *pCrawl = root;
+    string arr[100];
+
+    for (int i = 0; i < key.length(); i++)
+    {
+        int index = key[i] - 'a';
+        if (!pCrawl->children[index])
+            return NULL;
+
+        pCrawl = pCrawl->children[index];
+    }
+
+    return (pCrawl);
+}
+
+bool isLeafNode(struct TrieNode *root)
+{
+    return root->isEnd != false;
+}
+
+void display(struct TrieNode *root, char str[], int level)
+{
+    if (isLeafNode(root))
+    {
+        str[level] = '\0';
+        cout << str << root->phoneNumber << endl;
+    }
+
+    int i;
+    for (i = 0; i < SIZE; i++)
+    {
+        if (root->children[i])
+        {
+            str[level] = i + 'a';
+            display(root->children[i], str, level + 1);
+        }
+    }
+}
 
 fstream fp;
 contact cont;
@@ -74,7 +220,7 @@ void show_all_contacts()
     fp.close();
 }
 
-void display_contact(char typeOfSearch[], char searchField[], char searchValue[])
+void display_contact(string typeOfSearch, string searchField, string searchValue)
 {
     bool found = false;
     int ch;
@@ -83,15 +229,15 @@ void display_contact(char typeOfSearch[], char searchField[], char searchValue[]
     while (fp.read((char *)&cont, sizeof(contact)))
     {
 
-        if (typeOfSearch== "Partial")
+        if (typeOfSearch == "Partial")
         {
             cont.show_contact();
         }
         else
         {
-            if (searchField= "Phone")
+            if (searchField == "Phone")
             {
-                if (cont.getPhone()==searchValue)
+                if (cont.getPhone() == searchValue)
                 {
                     cont.show_contact();
                 }
@@ -102,7 +248,7 @@ void display_contact(char typeOfSearch[], char searchField[], char searchValue[]
             }
             else if (searchField == "FName")
             {
-                if (cont.getFirstName()== searchValue)
+                if (cont.getFirstName() == searchValue)
                 {
                     cont.show_contact();
                     found = true;
@@ -128,6 +274,33 @@ void display_contact(char typeOfSearch[], char searchField[], char searchValue[]
 
 int main(int argc, char *argv[])
 {
+    string keys[] = {"the", "a", "there",
+                     "answer", "any", "by",
+                     "bye", "their"};
+    int n = sizeof(keys) / sizeof(keys[0]);
+
+    struct TrieNode *root = getNode();
+    struct TrieNode *root1 = getNode();
+    long arr[] = {11122, 12, 111, 1};
+    struct TrieNode *phoneRoot = getNode();
+
+    string name[] = {"hello", "hi", "apple", "app"};
+    long ph[] = {12313, 1321, 32, 135156};
+
+    for (int i = 0; i < 4; i++)
+    {
+        string number = LongToString(ph[i]);
+        insertPhoneNumber(root1, LongToString(ph[i]), name[i], "");
+    }
+    char output[][32] = {"Not present in trie", "Present in trie"};
+
+    int level = 0;
+    char str[20];
+    cout << "Content of Trie: " << endl;
+    display(root1, str, level);
+    cout << search1(root1, "32")->firstName << "  done" << endl;
+
+    return 0;
     for (;;)
     {
         int ch;
@@ -145,7 +318,7 @@ int main(int argc, char *argv[])
         case 1:
         {
             string ph;
-            char fname[20], lname[20];
+            string fname, lname;
             cout << "Phone: ";
             cin >> ph;
             cout << "First Name: ";
@@ -162,11 +335,13 @@ int main(int argc, char *argv[])
             show_all_contacts();
             break;
         case 3:
-            char searchField[20], typeOfSearch[20], searchValue[20];
+        {
+            string searchField, typeOfSearch, searchValue;
             cout << "\n\n\tSearch Input ";
             cin >> searchValue;
             display_contact(typeOfSearch, searchField, searchValue);
             break;
+        }
 
         default:
             break;
