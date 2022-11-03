@@ -19,11 +19,14 @@ class contact
 		cin>>firstName;
 		cout<<"Last: ";
 		cin.ignore();
-		cin>>lastName;
- 
- 
+		cin>>lastName; 
 		cout<<"\n";
 	}
+    void create_contact(long ph,char fname[],char lname[]){
+        this->ph=ph;
+        this->firstName[20]=fname[20];
+        this->lastName[20]=lname[20];
+    }
 
 	void show_contact()
 	{
@@ -47,7 +50,7 @@ class contact
 		return lastName;
 	}
 };
- 
+
 fstream fp;
 contact cont;
 
@@ -60,7 +63,7 @@ void save_contact()
 	cout<<endl<<endl<<"Contact Has Been Sucessfully Created...";
 	getchar();
 }
- 
+
 void show_all_contacts()
 {
 	cout<<"LIST OF CONTACTS"<<endl;
@@ -108,32 +111,7 @@ void display_contact(char typeOfSearch[], char searchField[], char searchValue[]
 	getchar();
 }
   
-void edit_contact()
-{
-	int num;
-	bool found=false;
-	
-	cout<<"Edit contact\n===============================\n\n\t..::Enter the number of contact to edit:";
-	cin>>num;
-	fp.open("contactBook.txt",ios::in|ios::out);
-	while(fp.read((char*)&cont,sizeof(contact)) && found==false)
-	{
-		if(cont.getPhone()==num)
-		{
-			cont.show_contact();
-			cout<<"\nPlease Enter The New Details of Contact: "<<endl;
-			cont.create_contact();
-			int pos=-1*sizeof(cont);
-			fp.seekp(pos,ios::cur);
-			fp.write((char*)&cont,sizeof(cont));
-			cout<<endl<<endl<<"\t Contact Successfully Updated...";
-			found=true;
-		}
-	}
-	fp.close();
-	if(found==false)
-	cout<<endl<<endl<<"Contact Not Found...";	 
-}
+
   
 
   
@@ -163,9 +141,6 @@ int main(int argc, char *argv[])
 				cin>>searchValue;
 				display_contact(typeOfSearch, searchField, searchValue);
 				break;
-			case 4:edit_contact();
-				break;
-
 			default:
 				break;
 		}
