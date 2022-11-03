@@ -100,7 +100,7 @@ void display_contact(char typeOfSearch[], char searchField[], char searchValue[]
                     found = true;
                 }
             }
-            else if (searchField== "FName")
+            else if (searchField == "FName")
             {
                 if (cont.getFirstName()== searchValue)
                 {
