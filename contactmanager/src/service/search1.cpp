@@ -7,7 +7,8 @@ const int SIZE = 50;
 struct TrieNode
 {
     struct TrieNode *children[SIZE];
-    string name;
+    string firstName;
+    string lastName;
     long phoneNumber;
     bool isEnd;
 };
@@ -39,7 +40,8 @@ void insertName(struct TrieNode *root, string key,long phone)
  
     pCrawl->isEnd = true;
     pCrawl->phoneNumber=phone;
-    pCrawl->name="";
+    pCrawl->firstName="";
+    pCrawl->lastName="";
 }
 
 string LongToString(long long_num)
@@ -82,8 +84,8 @@ void insertPhoneNumber(struct TrieNode *root, string key,string fname,string lna
     }
  
     pCrawl->isEnd = true;
-    pCrawl->name=fname+lname;
-    // pCrawl->phoneNumber=NULL;
+    pCrawl->firstName=fname;
+    pCrawl->lastName=lname;
 }
  
 bool search(struct TrieNode *root, string key)
@@ -103,15 +105,17 @@ bool search(struct TrieNode *root, string key)
 TrieNode *search1(struct TrieNode *root, string key)
 {
     struct TrieNode *pCrawl = root;
+    string arr[100];
  
     for (int i = 0; i < key.length(); i++)
     {
         int index = key[i] - 'a';
         if (!pCrawl->children[index])
             return NULL;
- 
+
         pCrawl = pCrawl->children[index];
     }
+
     return (pCrawl);
 }
  
